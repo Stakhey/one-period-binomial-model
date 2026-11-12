@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-11-12_02-46-31",
+  "stock": "aapl",
+  "results": {
+    "inputs": {
+      "option_type": "c",
+      "strike_K": 300.0,
+      "spot_S_0": 355.63,
+      "up_factor_u": 1.0141773875916484,
+      "down_factor_d": 0.9860208009317628,
+      "daily_rate_r": 0.0001647982873829168
+    },
+    "outputs": {
+      "arbitrage_free": true,
+      "S_u": 360.6719043492179,
+      "S_d": 350.6585774353628,
+      "V_u": 60.671904349217925,
+      "V_d": 50.658577435362815,
+      "risk_neutral_probability": 0.5023335223999637,
+      "option_price": 55.67943134001472,
+      "hedge_ratio": 1.0,
+      "B": -299.9505686599853
+    }
+  }
+}
