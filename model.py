@@ -133,10 +133,10 @@ def outputJSON(results, stock=None):
 # Validates inputs before running calculations, if found using real stock, = 1 in order to pass tests automatically
 def inputValidation(option_type, strike_price, u = 1, d = 1, r = 1, spot_price = 1,): 
     
-    if option_type != "call" or option_type != "put": 
+    if option_type not in ("c", "p"):
         raise ValueError("Option input must be 'c' or 'p'") 
     
-    if (spot_price > 0) != True or (strike_price > 0) != True or (u > 0) != True or (d > 0): 
+    if (spot_price > 0) != True or (strike_price > 0) != True or (u > 0) != True or (d > 0) != True: 
         raise ValueError("Spot price, strike price, up factor and down factor must be greater than 0")    
 
     if (r > -1) != True: 
