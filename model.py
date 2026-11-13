@@ -22,6 +22,7 @@ def realStockData(selected_stock, option_type, K):
     # Connects to FRED API and fetches most recent r from 3 month US treasury yield time series
     fred = Fred(api_key=key)
     r_annual = (fred.get_series("DGS3MO").dropna().iloc[-1]) / 100 
+
     # Converts yearly r to daily r, (1+r_daily)^252 = 1 + r_annual, 252 trading days in a year
     r_daily = (1 + r_annual)**(1/252) - 1
 
@@ -35,7 +36,7 @@ def onePeriodBinomialModel(K, S_0, u, d, r, option_type):
     q = riskNeutralProbability(S_0, S_u, S_d, r)
     delta, B = replicationPortfolio(V_u, V_d, S_u, S_d, r)
 
-    # Returns dictionary of collected data for display
+    # Returns dictionary of collected data for display and testing
     return {
         "inputs": {
             "option_type": option_type,
@@ -72,6 +73,9 @@ def isArbitrageFree(d, r, u):
 
 def riskNeutralProbability(S_0, S_u, S_d, r_daily): 
     q = ((1 + r_daily)*S_0 - S_d) / (S_u - S_d)
+    # Validates that probability is not negative or greater than one
+    if (0 <= q <= 1) == False:
+        raise ValueError("Risk neutral probability q must meet the condition 0 < q < 1")
     return q
 
 # Calculates payoffs depending on if it's a call option or put option
@@ -109,6 +113,7 @@ def replicationPortfolio(V_u, V_d, S_u, S_d, r_daily):
 
 def outputJSON(results, stock=None):
 
+    # Generates timestamp as calculation metadata
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
     output = {
@@ -117,17 +122,25 @@ def outputJSON(results, stock=None):
         "results": results
     }
 
-    filename = f"{stock or 'imaginary_stock'}_{timestamp}.json"
+    # Fallback on imaginary if stock name not provided
+    filename = f"{stock or 'imaginary'}_{timestamp}.json"
 
     with open(filename, "w") as file:
         json.dump(output, file, indent=2)
 
     return filename
 
-def inputValidation(option_type): 
+# Validates inputs before running calculations, if found using real stock, = 1 in order to pass tests automatically
+def inputValidation(option_type, strike_price, u = 1, d = 1, r = 1, spot_price = 1,): 
+    
     if option_type != "call" or option_type != "put": 
-        raise ValueError("Option input must be 'c' or 'p'")
-        
+        raise ValueError("Option input must be 'c' or 'p'") 
+    
+    if (spot_price > 0) != True or (strike_price > 0) != True or (u > 0) != True or (d > 0): 
+        raise ValueError("Spot price, strike price, up factor and down factor must be greater than 0")    
+
+    if (r > -1) != True: 
+        raise ValueError("r must meet condition r > -1")
 
 if __name__ == "__main__":
 
@@ -139,9 +152,11 @@ if __name__ == "__main__":
         option_type = input("Is the option a call or a put? (c/p): ")
         selected_stock = input("Enter ticker symbol: ") 
         strike_price = float(input("Enter strike price (K): "))
+        inputValidation(option_type, strike_price)
 
         results = realStockData(selected_stock, option_type, strike_price) 
         json_output = outputJSON(results, selected_stock)
+        print(f"Option price: {round(results["outputs"]["option_price"], 2)}")
         print(f"Results saved to {json_output}")
 
     # Prompts user to enter data for imaginary stock
@@ -152,10 +167,12 @@ if __name__ == "__main__":
         spot_price = float(input("Enter spot price (S_0): "))
         up_factor = float(input("Enter up factor (u): "))
         down_factor = float(input("Enter down factor (d): "))
-        risk_free_rate = float(input("Enter daily risk-free rate as a decimal (r): "))
+        risk_free_rate = float(input("Enter daily risk-free rate as a decimal (r): ")) 
+        inputValidation(option_type, strike_price, up_factor, down_factor, risk_free_rate, spot_price)
 
         results = onePeriodBinomialModel(strike_price, spot_price, up_factor, down_factor, risk_free_rate, option_type)
         json_output = outputJSON(results)
+        print(f"Option price: {round(results["outputs"]["option_price"], 2)}")
         print(f"Results saved to {json_output}")
 
     else: 

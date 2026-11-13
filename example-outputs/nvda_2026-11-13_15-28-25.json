@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-11-13_15-28-25",
+  "stock": "nvda",
+  "results": {
+    "inputs": {
+      "option_type": "c",
+      "strike_K": 99.0,
+      "spot_S_0": 159.88,
+      "up_factor_u": 1.027034283478679,
+      "down_factor_d": 0.9736773310165355,
+      "daily_rate_r": 0.00016708211546623275
+    },
+    "outputs": {
+      "arbitrage_free": true,
+      "S_u": 164.20224124257118,
+      "S_d": 155.6715316829237,
+      "V_u": 65.20224124257118,
+      "V_d": 56.6715316829237,
+      "risk_neutral_probability": 0.4964629701766624,
+      "option_price": 60.89653836616594,
+      "hedge_ratio": 1.0,
+      "B": -98.98346163383405
+    }
+  }
+}

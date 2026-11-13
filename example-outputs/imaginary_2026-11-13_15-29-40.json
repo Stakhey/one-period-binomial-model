@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-11-13_15-29-40",
+  "stock": null,
+  "results": {
+    "inputs": {
+      "option_type": "c",
+      "strike_K": 100.0,
+      "spot_S_0": 100.0,
+      "up_factor_u": 1.2,
+      "down_factor_d": 0.9,
+      "daily_rate_r": 0.05
+    },
+    "outputs": {
+      "arbitrage_free": true,
+      "S_u": 120.0,
+      "S_d": 90.0,
+      "V_u": 20.0,
+      "V_d": 0,
+      "risk_neutral_probability": 0.5,
+      "option_price": 9.523809523809524,
+      "hedge_ratio": 0.6666666666666666,
+      "B": -57.14285714285714
+    }
+  }
+}

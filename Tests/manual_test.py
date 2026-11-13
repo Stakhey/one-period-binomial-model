@@ -1,7 +1,7 @@
 import pytest
 from model import onePeriodBinomialModel
 
-def test_knownValues(): 
+def test_known_values(): 
 
     # Tests first manual calculation done on paper
     out = onePeriodBinomialModel(100, 100, 1.2, 0.9, 0.05, "c")
