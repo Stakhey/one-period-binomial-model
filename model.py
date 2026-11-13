@@ -1,8 +1,7 @@
 import yfinance as yf 
 from fredapi import Fred
-from apikey import key
+from api_key import key
 import math
-import pandas as pd
 import json
 from datetime import datetime
 
@@ -140,6 +139,7 @@ if __name__ == "__main__":
         option_type = input("Is the option a call or a put? (c/p): ")
         selected_stock = input("Enter ticker symbol: ") 
         strike_price = float(input("Enter strike price (K): "))
+
         results = realStockData(selected_stock, option_type, strike_price) 
         json_output = outputJSON(results, selected_stock)
         print(f"Results saved to {json_output}")
